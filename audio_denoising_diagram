@@ -1,0 +1,112 @@
+// Audio Denoising Process
+digraph {
+	graph [rankdir=TB]
+	subgraph cluster_input {
+		color=lightgrey style=filled
+		A [label="Input Audio File"]
+		B [label="Load Audio"]
+		C [label="Normalize Audio"]
+		D [label="Add Noise"]
+		E [label="Chunk Audio"]
+		F [label="Create Tensor Dataset"]
+		G [label="Create DataLoader"]
+		label="Data Preparation"
+		A -> B
+		B -> C
+		C -> D
+		D -> E
+		E -> F
+		F -> G
+	}
+	subgraph cluster_model {
+		color=lightblue style=filled
+		H [label="Denoising Autoencoder Model"]
+		I [label="Encoder: Conv1d, ReLU, BatchNorm1d"]
+		J [label="Decoder: ConvTranspose1d, ReLU, BatchNorm1d, Tanh"]
+		label="Model Architecture"
+		H -> I
+		I -> J
+	}
+	subgraph cluster_train {
+		color=lightgreen style=filled
+		K [label="Train Autoencoder"]
+		L [label="Spectrogram Loss"]
+		M [label="MSE Loss"]
+		N [label="Adam Optimizer"]
+		label=Training
+		G -> K
+		K -> L
+		L -> M
+		K -> N
+	}
+	subgraph cluster_output {
+		color=lightyellow style=filled
+		O [label="Model Forward Pass"]
+		P [label="Denoise Audio Chunks"]
+		Q [label="Concatenate Denoised Chunks"]
+		R [label="Normalize Denoised Audio"]
+		S [label="Save Denoised Audio"]
+		T [label="Save Noisy Audio"]
+		U [label="Save Model Weights (H5 & PyTorch)"]
+		label=Output
+		H -> O
+		O -> P
+		P -> Q
+		Q -> R
+		R -> S
+		D -> T
+		H -> U
+	}
+	subgraph cluster_tuning {
+		color=lavender style=filled
+		V [label="Hyperparameter Tuning"]
+		W [label="Learning Rates, Epochs"]
+		X [label="Train Autoencoder (Tuning)"]
+		Y [label="Calculate Average Spectrogram Loss"]
+		Z [label="Select Best Model"]
+		AA [label="Best Model, LR, Epochs"]
+		label="Hyperparameter Tuning"
+		V -> W
+		W -> X
+		X -> Y
+		Y -> Z
+		Z -> AA
+	}
+	G -> H
+	K -> O
+	AA -> S
+	BB [label=" " style=invis]
+	CC [label=" " style=invis]
+	DD [label=" " style=invis]
+	EE [label=" " style=invis]
+	FF [label=" " style=invis]
+	GG [label=" " style=invis]
+	HH [label=" " style=invis]
+	II [label=" " style=invis]
+	JJ [label=" " style=invis]
+	KK [label=" " style=invis]
+	LL [label=" " style=invis]
+	MM [label=" " style=invis]
+	NN [label=" " style=invis]
+	OO [label=" " style=invis]
+	PP [label=" " style=invis]
+	QQ [label=" " style=invis]
+	RR [label=" " style=invis]
+	SS [label=" " style=invis]
+	B -> BB [style=invis]
+	E -> CC [style=invis]
+	G -> DD [style=invis]
+	K -> EE [style=invis]
+	D -> FF [style=invis]
+	B -> GG [style=invis]
+	H -> HH [style=invis]
+	J -> II [style=invis]
+	L -> JJ [style=invis]
+	B -> LL [style=invis]
+	D -> MM [style=invis]
+	F -> NN [style=invis]
+	S -> PP [style=invis]
+	T -> QQ [style=invis]
+	AA -> RR [style=invis]
+	SS -> PP [style=invis]
+}
